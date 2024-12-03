@@ -122,7 +122,7 @@ namespace Ryujinx.Ava
         private bool _dialogShown;
         private readonly bool _isFirmwareTitle;
 
-        private readonly object _lockObject = new();
+        private readonly Lock _lockObject = new();
 
         public event EventHandler AppExit;
         public event EventHandler<StatusUpdatedEventArgs> StatusUpdatedEvent;
@@ -680,13 +680,13 @@ namespace Ryujinx.Ava
             if (Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime)
             {
                 if (!SetupValidator.CanStartApplication(ContentManager, ApplicationPath, out UserError userError))
-                { 
+                {
                     if (SetupValidator.CanFixStartApplication(ContentManager, ApplicationPath, userError, out firmwareVersion))
                     {
                         if (userError is UserError.NoFirmware)
                         {
                             UserResult result = await ContentDialogHelper.CreateConfirmationDialog(
-                                LocaleManager.Instance[LocaleKeys.DialogFirmwareNoFirmwareInstalledMessage], 
+                                LocaleManager.Instance[LocaleKeys.DialogFirmwareNoFirmwareInstalledMessage],
                                 LocaleManager.Instance.UpdateAndGetDynamicValue(LocaleKeys.DialogFirmwareInstallEmbeddedMessage, firmwareVersion.VersionString),
                                 LocaleManager.Instance[LocaleKeys.InputDialogYes],
                                 LocaleManager.Instance[LocaleKeys.InputDialogNo],
